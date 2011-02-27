@@ -1,0 +1,25 @@
+#!/bin/sh
+
+source /home/$(whoami)/.syncaurrc
+
+fetch ()
+{
+    cd $PKGDIR
+    curl -s http://aur.archlinux.org/packages/$PKGNAME/$PKGNAME.tar.gz | tar -xz --overwrite
+}
+
+if [[ $1 == "new" ]]; then
+    PKGNAME=$2;
+    fetch;
+elif [[ $1 == "sync" ]]; then
+    cd $PKGDIR
+    for DIR in $(ls);
+    do if [[ -d $DIR ]]; then
+	    echo "Fetching $DIR";
+	    PKGNAME=$DIR;
+	    fetch;
+	fi
+    done
+elif [[ $1 == "del" && -n $2 ]]; then
+    rm -rvf $PKGDIR/$2;
+fi

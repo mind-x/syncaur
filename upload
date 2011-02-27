@@ -1,0 +1,16 @@
+#!/bin/sh
+
+source /home/$(whoami)/.syncaurrc
+
+ARCH=$(uname -m)
+
+cd $PKGDIR
+for DIR in $(ls);
+    do if [[ -d $DIR ]]; then
+	PKGLIST=$PKGLIST" $(ls $DIR/*.pkg.tar.xz)";
+    fi
+done
+
+echo $PKGLIST
+
+lftp repo.mind-x.org/$ARCH -u $USERPASS -e "mput $PKGLIST; exit"
