@@ -2,7 +2,14 @@
 
 source /home/$(whoami)/.syncaurrc
 
-cd $PKGDIR
+ARCH=$(uname -m)
+
+if [[ $1 == "trunk" ]]; then
+	cd $TRUNKDIR;
+else
+	cd $PKGDIR;
+fi
+
 for DIR in $(ls);
     do if [[ -d $DIR ]]; then
 	cd $DIR;
@@ -17,14 +24,16 @@ for DIR in $(ls);
 	PKGFILE="$DIR-$PKGVER-$PKGREL-$ARCH.pkg.tar.xz"
 	if ! [[ -f $PKGFILE ]]; then
 	    rm *.pkg.tar.xz;
-	    echo "Building $PKGFILE";
+	    echo -e "\e[1;31m==> \e[1;37mBuilding $PKGFILE\e[0m";
 	    makepkg -f;
+	    echo -e "\e[1;31m==> \e[1;37mUploading $PKGFILE to $FTP.\e[0m";
+	    wput $PKGFILE ftp://$USER:$PASS@$FTP/$ARCH/;
 	else
-	    echo "Package $PKGFILE have already built."
+	    echo -e "\e[1;31m==> \e[1;37mPackage $PKGFILE have already built.\e[0m"
 	fi
 	
 	cd ..;
     fi
 done
 
-echo "Building done."
+echo -e "\e[1;31m==> \e[1;37mBuilding done.\e[0m"

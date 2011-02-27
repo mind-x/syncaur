@@ -4,6 +4,7 @@ source /home/$(whoami)/.syncaurrc
 
 fetch ()
 {
+	echo -e "\e[1;31m==> \e[1;37mFetching $PKGNAME\e[0m"
     cd $PKGDIR
     curl -s http://aur.archlinux.org/packages/$PKGNAME/$PKGNAME.tar.gz | tar -xz --overwrite
 }
@@ -15,11 +16,26 @@ elif [[ $1 == "sync" ]]; then
     cd $PKGDIR
     for DIR in $(ls);
     do if [[ -d $DIR ]]; then
-	    echo "Fetching $DIR";
+	    echo -e "\e[1;31m==> \e[1;37mFetching $DIR\e[0m";
 	    PKGNAME=$DIR;
 	    fetch;
 	fi
     done
+elif [[ $1 == "trunknew" ]]; then
+	cd $TRUNKDIR;
+	PKGNAME=$2;
+	echo -e "\e[1;31m==> \e[1;37mFetching $PKGNAME\e[0m";
+	curl -s http://aur.archlinux.org/packages/$PKGNAME/$PKGNAME.tar.gz | tar -xz --overwrite;
+elif [[ $1 == "trunksync" ]]; then
+	cd $TRUNKDIR;
+	for DIR in $(ls);
+	do if [[ -d $DIR ]]; then
+		echo -e "\e[1;31m==> \e[1;37mFetching $DIR\e[0m";
+		cd $DIR;
+		makepkg -o;
+		cd ..;
+	fi
+	done
 elif [[ $1 == "del" && -n $2 ]]; then
     rm -rvf $PKGDIR/$2;
 fi

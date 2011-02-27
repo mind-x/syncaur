@@ -4,7 +4,12 @@ source /home/$(whoami)/.syncaurrc
 
 ARCH=$(uname -m)
 
-cd $PKGDIR
+if [[ $1 == "trunk" ]]; then
+	cd $TRUNKDIR;
+else
+	cd $PKGDIR;
+fi
+
 for DIR in $(ls);
     do if [[ -d $DIR ]]; then
 	PKGLIST=$PKGLIST" $(ls $DIR/*.pkg.tar.xz)";
@@ -13,4 +18,4 @@ done
 
 echo $PKGLIST
 
-lftp repo.mind-x.org/$ARCH -u $USERPASS -e "mput $PKGLIST; exit"
+lftp repo.mind-x.org/$ARCH -u $USER,$PASS -e "mput $PKGLIST; exit"
