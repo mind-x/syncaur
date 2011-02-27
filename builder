@@ -24,16 +24,16 @@ for DIR in $(ls);
 	PKGFILE="$DIR-$PKGVER-$PKGREL-$ARCH.pkg.tar.xz"
 	if ! [[ -f $PKGFILE ]]; then
 	    rm *.pkg.tar.xz;
-	    echo -e "\e[1;31m==> \e[1;37mBuilding $PKGFILE\e[0m";
+	    echo -e "\e[44;31m==> \e[1;37mBuilding $PKGFILE\e[0m";
 	    makepkg -f;
-	    echo -e "\e[1;31m==> \e[1;37mUploading $PKGFILE to $FTP.\e[0m";
+	    echo -e "\e[44;31m==> \e[1;37mUploading $PKGFILE to $FTP.\e[0m";
 	    wput $PKGFILE ftp://$USER:$PASS@$FTP/$ARCH/;
 	else
-	    echo -e "\e[1;31m==> \e[1;37mPackage $PKGFILE have already built.\e[0m"
+	    echo -e "\e[44;31m==> \e[1;37mPackage $PKGFILE have already built.\e[0m"
 	fi
 	
 	cd ..;
     fi
 done
 
-echo -e "\e[1;31m==> \e[1;37mBuilding done.\e[0m"
+echo -e "\e[44;31m==> \e[1;37mBuilding done.\e[0m"

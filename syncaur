@@ -1,9 +1,9 @@
 #!/bin/sh
 
-echo -e "\e[1;31m==> \e[1;37mStart fetching...\e[0m"
+echo -e "\e[44;31m==> \e[1;37mStart fetching...\e[0m"
 fetch sync
 fetch trunksync
-echo -en "\e[1;31m==> \e[1;37mStart building? (y/n) \e[0m"
+echo -en "\e[44;31m==> \e[1;37mStart building? (y/n) \e[0m"
 read a
 if [[ $a == "y" ]]; then
 	builder;
