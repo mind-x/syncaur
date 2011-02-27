@@ -18,4 +18,4 @@ done
 
 echo $PKGLIST
 
-lftp repo.mind-x.org/$ARCH -u $USER,$PASS -e "mput $PKGLIST; exit"
+lftp $FTP/$ARCH -u $USER,$PASS -e "mput $PKGLIST; exit"
