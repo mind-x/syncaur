@@ -8,33 +8,48 @@ fetch ()
     curl -s http://aur.archlinux.org/packages/$PKGNAME/$PKGNAME.tar.gz | tar -xz --overwrite
 }
 
-if [[ $1 == "new" ]]; then
+if [[ $1 == "--new" || $1 == "-n" ]]; then
     PKGNAME=$2;
     fetch;
-elif [[ $1 == "sync" ]]; then
+elif [[ $1 == "--sync" || $1 == "-s" ]]; then
     cd $PKGDIR
     for DIR in $(ls);
     do if [[ -d $DIR ]]; then
-	    echo -e "\e[44;31m==> \e[1;37mFetching $DIR\e[0m";
+	    echo -e "\e[44;31m==> \e[1;37mПолучение $DIR\e[0m";
 	    PKGNAME=$DIR;
 	    fetch;
 	fi
     done
-elif [[ $1 == "trunknew" ]]; then
+elif [[ $1 == "--trunknew" || $1 == "-tn" ]]; then
 	cd $TRUNKDIR;
 	PKGNAME=$2;
-	echo -e "\e[44;31m==> \e[1;37mFetching $PKGNAME\e[0m";
+	echo -e "\e[44;31m==> \e[1;37mПолучение $PKGNAME\e[0m";
 	curl -s http://aur.archlinux.org/packages/$PKGNAME/$PKGNAME.tar.gz | tar -xz --overwrite;
-elif [[ $1 == "trunksync" ]]; then
+elif [[ $1 == "--trunksync" || $1 == "-ts" ]]; then
 	cd $TRUNKDIR;
 	for DIR in $(ls);
 	do if [[ -d $DIR ]]; then
-		echo -e "\e[44;31m==> \e[1;37mFetching $DIR\e[0m";
+		echo -e "\e[44;31m==> \e[1;37mПолучение $DIR\e[0m";
 		cd $DIR;
 		makepkg -o;
 		cd ..;
 	fi
 	done
-elif [[ $1 == "del" && -n $2 ]]; then
+elif [[ ( $1 == "--del" || $1 == "-d" ) && -n $2 ]]; then
     rm -rvf $PKGDIR/$2;
+elif [[ ( $1 == "--trunkdel" || $1 == "-td" ) && -n $2 ]]; then
+	rm -rvf $TRUNKDIR/$2;
+elif [[ $1 == "--help" || $1 == "-h" ]]; then
+	echo "использование: fetch <параметр> [...]
+параметры:
+-h  --help              помощь по использованию скрипта.
+-n  --new <пакет>       Добавление нового пакета в дерево сборки. Создает директорию
+                        с именем пакета, содержащую PKGBUILD и install-файл если он имеется.
+-s  --sync              Синхронизирует PKGBUILD'ы с AUR.
+-tn --trunknew <пакет>  Делает то же самое, что и --new, только для пакетов из svn или git.
+-ts --trunksync         Синхронизирует PKGBUILD'ы с svn или git.
+-d  --del <пакет>       Удаляет пакет из дерева сборки.
+-td --trunkdel <пакет>  Удаляет svn/git-пакет из дерева сборки."; 
+else 
+	echo "Неверные аргументы!";
 fi

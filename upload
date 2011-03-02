@@ -4,6 +4,15 @@ source /home/$(whoami)/.syncaurrc
 
 ARCH=$(uname -m)
 
+if [[ $1 == "--help" || $1 == "-h" ]]; then
+	echo "использование: fetch <параметр>
+параметры:
+-h  --help       Помощь по использованию скрипта.
+<без параметров> Отправляет пакеты по FTP из основного дерева сборки.
+-t --trunk       Oтправляет пакеты по FTP из svn/git-дерева сборки.";
+	exit;
+fi
+
 if [[ $1 == "trunk" ]]; then
 	cd $TRUNKDIR;
 else

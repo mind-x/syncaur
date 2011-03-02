@@ -4,7 +4,15 @@ source /home/$(whoami)/.syncaurrc
 
 ARCH=$(uname -m)
 
-if [[ $1 == "trunk" ]]; then
+if [[ $1 == "--help" || $1 == "-h" ]]; then
+	echo "использование: fetch <параметр>
+параметры:
+-h  --help       Помощь по использованию скрипта.
+<без параметров> Собирает и отправляет пакеты по FTP из основного дерева сборки.
+-t --trunk       Собирает и отправляет по FTP пакеты из svn и git.";
+	exit;
+fi
+if [[ $1 == "--trunk" || $1 == "-t" ]]; then
 	cd $TRUNKDIR;
 else
 	cd $PKGDIR;
@@ -24,16 +32,16 @@ for DIR in $(ls);
 	PKGFILE="$DIR-$PKGVER-$PKGREL-$ARCH.pkg.tar.xz"
 	if ! [[ -f $PKGFILE ]]; then
 	    rm *.pkg.tar.xz;
-	    echo -e "\e[44;31m==> \e[1;37mBuilding $PKGFILE\e[0m";
+	    echo -e "\e[44;31m==> \e[1;37mСборка $PKGFILE\e[0m";
 	    makepkg -f;
-	    echo -e "\e[44;31m==> \e[1;37mUploading $PKGFILE to $FTP.\e[0m";
-	    wput $PKGFILE ftp://$USER:$PASS@$FTP/$ARCH/;
+	    echo -e "\e[1;31m==> \e[1;37mОтправка $PKGFILE в $FTP.\e[0m";
+	    wput *.pkg.tar.xz ftp://$USER:$PASS@$FTP/$ARCH/;
 	else
-	    echo -e "\e[44;31m==> \e[1;37mPackage $PKGFILE have already built.\e[0m"
+	    echo -e "\e[42;31m==> \e[1;37mПакет $PKGFILE уже собран.\e[0m"
 	fi
 	
 	cd ..;
     fi
 done
 
-echo -e "\e[44;31m==> \e[1;37mBuilding done.\e[0m"
+echo -e "\e[44;31m==> \e[1;37mСборка завершена.\e[0m"
