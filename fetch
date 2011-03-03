@@ -15,7 +15,7 @@ elif [[ $1 == "--sync" || $1 == "-s" ]]; then
     cd $PKGDIR
     for DIR in $(ls);
     do if [[ -d $DIR ]]; then
-	    echo -e "\e[44;31m==> \e[1;37mПолучение $DIR\e[0m";
+	    echo -e "\e[1;31m==> \e[1;37mПолучение $DIR\e[0m";
 	    PKGNAME=$DIR;
 	    fetch;
 	fi
@@ -23,13 +23,13 @@ elif [[ $1 == "--sync" || $1 == "-s" ]]; then
 elif [[ $1 == "--trunknew" || $1 == "-tn" ]]; then
 	cd $TRUNKDIR;
 	PKGNAME=$2;
-	echo -e "\e[44;31m==> \e[1;37mПолучение $PKGNAME\e[0m";
+	echo -e "\e[1;31m==> \e[1;37mПолучение $PKGNAME\e[0m";
 	curl -s http://aur.archlinux.org/packages/$PKGNAME/$PKGNAME.tar.gz | tar -xz --overwrite;
 elif [[ $1 == "--trunksync" || $1 == "-ts" ]]; then
 	cd $TRUNKDIR;
 	for DIR in $(ls);
 	do if [[ -d $DIR ]]; then
-		echo -e "\e[44;31m==> \e[1;37mПолучение $DIR\e[0m";
+		echo -e "\e[1;31m==> \e[1;37mПолучение $DIR\e[0m";
 		cd $DIR;
 		makepkg -o;
 		cd ..;
