@@ -24,16 +24,14 @@ for DIR in $(ls);
 	PKGVER=$(cat PKGBUILD | grep -m 1 pkgver= | sed 's/pkgver=//');
 	PKGREL=$(cat PKGBUILD | grep -m 1 pkgrel= | sed 's/pkgrel=//');
 	PKGARCH=$(cat PKGBUILD | grep -m 1 arch=\(\' | sed "s/arch=('//" | cut -c -3);
-	if [[ $PKGARCH == "any" ]]; then
-	    ARCH=$PKGARCH;
-	else
-	    ARCH=$(uname -m);
+	if [[ $PKGARCH != "any" ]]; then
+	    PKGARCH=$(uname -m);
 	fi
-	PKGFILE="$DIR-$PKGVER-$PKGREL-$ARCH.pkg.tar.xz"
+	PKGFILE="$DIR-$PKGVER-$PKGREL-$PKGARCH.pkg.tar.xz"
 	if ! [[ -f $PKGFILE ]]; then
 	    rm *.pkg.tar.xz;
 	    echo -e "\e[44;31m==> \e[1;37mСборка $PKGFILE\e[0m";
-	    makepkg -f;
+	    makepkg -fs;
 	    echo -e "\e[1;31m==> \e[1;37mОтправка $PKGFILE в $FTP.\e[0m";
 	    wput *.pkg.tar.xz ftp://$USER:$PASS@$FTP/$ARCH/;
 	else
