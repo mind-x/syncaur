@@ -1,5 +1,7 @@
 #!/bin/sh
 
+ARCH=$(uname -m)
+
 echo -e "\e[44;31m==> \e[1;37mНачинаем синхронизацию...\e[0m"
 fetch --sync
 fetch --trunksync
