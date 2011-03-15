@@ -32,8 +32,7 @@ for DIR in $(ls);
 	    rm *.pkg.tar.xz;
 	    echo -e "\e[44;31m==> \e[1;37mСборка $PKGFILE\e[0m";
 	    makepkg -fs;
-	    echo -e "\e[1;31m==> \e[1;37mОтправка $PKGFILE в $FTP.\e[0m";
-	    lftp $FTP/$ARCH -u $USER,$PASS -e "mput *.pkg.tar.xz; exit";
+	    cp *.pkg.tar.xz $TEMPDIR/;
 	else
 	    echo -e "\e[42;31m==> \e[1;37mПакет $PKGFILE уже собран.\e[0m"
 	fi

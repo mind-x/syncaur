@@ -9,3 +9,7 @@ if [[ $a == "y" ]]; then
 	builder;
 	builder --trunk;
 fi
+cd $TEMPDIR;
+echo -e "\e[1;31m==> \e[1;37mОтправка собранных пакетов в $FTP.\e[0m";
+	    lftp $FTP/$ARCH -u $USER,$PASS -e "mput *.pkg.tar.xz; exit";
+	    rm *.pkg.tar.xz;
